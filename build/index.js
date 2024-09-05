@@ -7,7 +7,7 @@ const completedToDo = document.querySelector("#todo__completed");
 const toDoForm = document.querySelector("#todo-form");
 // ToDO Class
 class ToDoObj {
-    constructor(title, formattedTime, formattedDate, id) {
+    constructor(title, formattedDate, formattedTime, id) {
         this.title = title;
         this.formattedDate = formattedDate;
         this.formattedTime = formattedTime;

@@ -250,6 +250,11 @@ section::-webkit-scrollbar-thumb {
   margin-bottom: 1.5rem;
 }
 
+.completed h4 {
+  text-decoration: line-through;
+  user-select: none;
+}
+
 li.active {
   background-color: var(--primary-color);
 }

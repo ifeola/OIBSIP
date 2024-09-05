@@ -9,19 +9,19 @@ const toDoForm = document.querySelector("#todo-form") as HTMLFormElement;
 // ToDo Type
 type ToDo = {
   title: string;
-  formattedTime: string;
   formattedDate: string;
+  formattedTime: string;
   id: string;
 }
 
 // ToDO Class
 class ToDoObj {
   title: string;
-  formattedTime: string;
   formattedDate: string;
+  formattedTime: string;
   id: string;
 
-  constructor(title: string,formattedTime: string, formattedDate: string, id: string) {
+  constructor(title: string, formattedDate: string, formattedTime: string, id: string) {
     this.title = title
     this.formattedDate = formattedDate;
     this.formattedTime = formattedTime;
