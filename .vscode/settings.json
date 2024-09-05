@@ -1,0 +1,11 @@
+{
+  "liveServer.settings.port": 5502,
+  "editor.cursorSurroundingLines": 2,
+  "editor.fontFamily": "'Fira Code'",
+  "diffEditor.wordWrap": "on",
+  "editor.minimap.maxColumn": 100,
+  "editor.suggestLineHeight": 0,
+  "editor.lineHeight": 1.8,
+  "editor.renderLineHighlight": "line",
+  "markdown.preview.lineHeight": 1.4
+}
