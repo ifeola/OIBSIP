@@ -12,6 +12,8 @@ type ToDo = {
   formattedDate: string;
   formattedTime: string;
   id: string;
+  completed: string;
+  checked: boolean;
 }
 
 // ToDO Class
@@ -20,21 +22,29 @@ class ToDoObj {
   formattedDate: string;
   formattedTime: string;
   id: string;
+  completed: string;
+  checked: boolean;
 
-  constructor(title: string, formattedDate: string, formattedTime: string, id: string) {
+  constructor(title: string, formattedDate: string, formattedTime: string, id: string, completed: string, checked: boolean) {
     this.title = title
     this.formattedDate = formattedDate;
     this.formattedTime = formattedTime;
     this.id = id;
+    this.completed = completed;
+    this.checked = checked;
   }
 }
 
 class UI {
   static getToDOList() {
     let toDoList: ToDo[] = Store.getToDo();
+
+    // for (let i = 0; i < toDoList.length; i++) {
+    //   UI.addTodo(toDoList[i]);
+    // }
     
     toDoList.forEach(toDo => {
-      UI.addTodo(toDo);
+        UI.addTodo(toDo);
     })
   }
 
@@ -42,6 +52,7 @@ class UI {
     const listItem = document.createElement('li') as HTMLLIElement;
     listItem.classList.add('todo-item');
     listItem.id = toDo.id;
+    listItem.setAttribute("ariaChecked", toDo.completed)
     listItem.innerHTML = `
       <div class="item__content">
         <div class="item__info">
@@ -92,7 +103,17 @@ class UI {
         <button type="submit">Submit</button>
       </form>
     `
-    pendingToDo.appendChild(listItem);
+    let list = listItem.querySelector(".inp-checkbox") as HTMLInputElement;
+    let listTitle = listItem.querySelector(".item__title") as HTMLElement;
+    if (listItem.getAttribute("ariaChecked") === "false") {
+      list.checked = false;
+      listTitle.classList.remove('checked');
+      pendingToDo.appendChild(listItem);
+    } else {
+      list.checked = true;
+      listTitle.classList.add('checked');
+      completedToDo.appendChild(listItem);
+    }
   }
 
   static deleteToDo(target: HTMLElement) {
@@ -136,6 +157,35 @@ class UI {
       editForm.classList.remove('active');
     })
   }
+
+  static completeToDo(target: HTMLInputElement) {
+    const checked = target.classList.contains('inp-checkbox');
+    const title = target.parentElement?.parentElement?.parentElement?.querySelector('.item__title');
+    const titleParent = target?.closest('.todo-item') as HTMLElement;
+
+    const toDoList = Store.getToDo();
+
+    toDoList.forEach((toDo, index) => {
+      if (checked && target.checked === true && toDo.id === titleParent.id) {
+          toDo.completed = "true"
+          toDo.checked = true;
+          title?.classList.add('checked');
+          titleParent.setAttribute('ariaChecked', "true");
+          pendingToDo.removeChild(titleParent);
+          completedToDo.appendChild(titleParent);
+      } else {
+        if (checked && target.checked !== true && toDo.id === titleParent.id) {
+          toDo.completed = "false"
+          toDo.checked = false;
+          title?.classList.remove('checked');
+          titleParent.setAttribute('ariaChecked', "false");
+          pendingToDo.appendChild(titleParent);
+          completedToDo.removeChild(titleParent);
+        }
+      }
+    })
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+  } 
 }
 
 class Store {
@@ -211,7 +261,9 @@ toDoForm.addEventListener('submit', (e: Event) => {
   // Get Input Value
   const inputEl = toDoForm.querySelector('input') as HTMLInputElement;
   const inputValue: string = inputEl.value;
-  const toDoObj: ToDo = new ToDoObj(inputValue, formattedDate, formattedTime, idAsString)
+  let completed = "false";
+  let checked = false
+  const toDoObj: ToDo = new ToDoObj(inputValue, formattedDate, formattedTime, idAsString, completed, checked)
   UI.addTodo(toDoObj);
   Store.addToDo(toDoObj);
 
@@ -220,8 +272,10 @@ toDoForm.addEventListener('submit', (e: Event) => {
 })
 
 toDoSection.addEventListener('click', (e: Event) => {
-  const target = e.target as HTMLElement;
+  let target = e.target as HTMLElement;
+  let inputTarget = e.target as HTMLInputElement;
   if (!target) return;
+  if (!inputTarget) return;
 
   // Delete ToDo Item
   UI.deleteToDo(target);
@@ -230,5 +284,6 @@ toDoSection.addEventListener('click', (e: Event) => {
   // Show Edit form
   UI.showEditForm(target);
 
-  // completed ToDo
+  // Completed ToDo
+  UI.completeToDo(inputTarget);
 })

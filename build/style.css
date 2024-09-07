@@ -78,8 +78,8 @@ svg {
   transform: translate3d(0, 0, 0);
 
   position: relative;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 3px;
   transform: scale(1);
   vertical-align: middle;
@@ -95,6 +95,8 @@ svg {
 .checkbox svg {
   position: absolute;
   fill: none;
+  width: 8px;
+  height: 10px;
   stroke: var(--body-color);
   stroke-width: 2;
   stroke-linecap: round;
@@ -108,8 +110,6 @@ svg {
 
 .checkbox::before {
   content: "";
-  width: 100%;
-  height: 100%;
   display: block;
   transform: scale(0);
   opacity: 1;
@@ -229,7 +229,7 @@ section {
   margin: 1rem;
   max-height: 30rem;
   overflow-y: auto;
-  padding-inline-end: 0.75rem;
+  /* padding-inline-end: 0.75rem; */
 }
 
 section::-webkit-scrollbar {
@@ -250,11 +250,6 @@ section::-webkit-scrollbar-thumb {
   margin-bottom: 1.5rem;
 }
 
-.completed h4 {
-  text-decoration: line-through;
-  user-select: none;
-}
-
 li.active {
   background-color: var(--primary-color);
 }
@@ -265,7 +260,6 @@ li {
   padding: 1rem;
   border-left: 3px solid var(--outline-color);
   border-radius: 8px;
-  /* backdrop-filter: blur(16px); */
 
   .item__content {
     display: flex;
@@ -276,6 +270,11 @@ li {
   .item__info {
     display: flex;
     gap: 1rem;
+  }
+
+  .item__title.checked {
+    text-decoration: line-through;
+    user-select: none;
   }
 
   .timestamp {
@@ -354,5 +353,15 @@ li {
 
   .item__edit.active {
     display: flex;
+  }
+}
+
+@media (width < 560px) {
+  li {
+    padding: 0.75rem;
+  }
+
+  li .item__info {
+    gap: 0.5rem;
   }
 }

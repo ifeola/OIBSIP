@@ -7,16 +7,21 @@ const completedToDo = document.querySelector("#todo__completed");
 const toDoForm = document.querySelector("#todo-form");
 // ToDO Class
 class ToDoObj {
-    constructor(title, formattedDate, formattedTime, id) {
+    constructor(title, formattedDate, formattedTime, id, completed, checked) {
         this.title = title;
         this.formattedDate = formattedDate;
         this.formattedTime = formattedTime;
         this.id = id;
+        this.completed = completed;
+        this.checked = checked;
     }
 }
 class UI {
     static getToDOList() {
         let toDoList = Store.getToDo();
+        // for (let i = 0; i < toDoList.length; i++) {
+        //   UI.addTodo(toDoList[i]);
+        // }
         toDoList.forEach(toDo => {
             UI.addTodo(toDo);
         });
@@ -25,6 +30,7 @@ class UI {
         const listItem = document.createElement('li');
         listItem.classList.add('todo-item');
         listItem.id = toDo.id;
+        listItem.setAttribute("ariaChecked", toDo.completed);
         listItem.innerHTML = `
       <div class="item__content">
         <div class="item__info">
@@ -75,7 +81,18 @@ class UI {
         <button type="submit">Submit</button>
       </form>
     `;
-        pendingToDo.appendChild(listItem);
+        let list = listItem.querySelector(".inp-checkbox");
+        let listTitle = listItem.querySelector(".item__title");
+        if (listItem.getAttribute("ariaChecked") === "false") {
+            list.checked = false;
+            listTitle.classList.remove('checked');
+            pendingToDo.appendChild(listItem);
+        }
+        else {
+            list.checked = true;
+            listTitle.classList.add('checked');
+            completedToDo.appendChild(listItem);
+        }
     }
     static deleteToDo(target) {
         var _a, _b;
@@ -113,6 +130,34 @@ class UI {
             editInput.value = '';
             editForm.classList.remove('active');
         });
+    }
+    static completeToDo(target) {
+        var _a, _b, _c;
+        const checked = target.classList.contains('inp-checkbox');
+        const title = (_c = (_b = (_a = target.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.parentElement) === null || _c === void 0 ? void 0 : _c.querySelector('.item__title');
+        const titleParent = target === null || target === void 0 ? void 0 : target.closest('.todo-item');
+        const toDoList = Store.getToDo();
+        toDoList.forEach((toDo, index) => {
+            if (checked && target.checked === true && toDo.id === titleParent.id) {
+                toDo.completed = "true";
+                toDo.checked = true;
+                title === null || title === void 0 ? void 0 : title.classList.add('checked');
+                titleParent.setAttribute('ariaChecked', "true");
+                pendingToDo.removeChild(titleParent);
+                completedToDo.appendChild(titleParent);
+            }
+            else {
+                if (checked && target.checked !== true && toDo.id === titleParent.id) {
+                    toDo.completed = "false";
+                    toDo.checked = false;
+                    title === null || title === void 0 ? void 0 : title.classList.remove('checked');
+                    titleParent.setAttribute('ariaChecked', "false");
+                    pendingToDo.appendChild(titleParent);
+                    completedToDo.removeChild(titleParent);
+                }
+            }
+        });
+        localStorage.setItem("toDoList", JSON.stringify(toDoList));
     }
 }
 class Store {
@@ -173,20 +218,26 @@ toDoForm.addEventListener('submit', (e) => {
     // Get Input Value
     const inputEl = toDoForm.querySelector('input');
     const inputValue = inputEl.value;
-    const toDoObj = new ToDoObj(inputValue, formattedDate, formattedTime, idAsString);
+    let completed = "false";
+    let checked = false;
+    const toDoObj = new ToDoObj(inputValue, formattedDate, formattedTime, idAsString, completed, checked);
     UI.addTodo(toDoObj);
     Store.addToDo(toDoObj);
     // Clear Input field
     inputEl.value = "";
 });
 toDoSection.addEventListener('click', (e) => {
-    const target = e.target;
+    let target = e.target;
+    let inputTarget = e.target;
     if (!target)
+        return;
+    if (!inputTarget)
         return;
     // Delete ToDo Item
     UI.deleteToDo(target);
     Store.deleteToDo(target);
     // Show Edit form
     UI.showEditForm(target);
-    // completed ToDo
+    // Completed ToDo
+    UI.completeToDo(inputTarget);
 });

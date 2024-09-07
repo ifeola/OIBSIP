@@ -7,5 +7,8 @@
   "editor.suggestLineHeight": 0,
   "editor.lineHeight": 1.8,
   "editor.renderLineHighlight": "line",
-  "markdown.preview.lineHeight": 1.4
+  "markdown.preview.lineHeight": 1.4,
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorStyleInactive": "line"
 }
