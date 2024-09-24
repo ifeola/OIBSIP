@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="calculator">
+      <input type="text" name="input-field" id="input-field" disabled />
+
+      <div class="calculator-body">
+        <button data-all-clear class="calculator-btn clear">C</button>
+        <button data-operation class="calculator-btn calc-btn">%</button>
+        <button data-delete class="calculator-btn calc-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="size-5">
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+        <button data-operation class="calculator-btn calc-btn">
+          <span>&divide;</span>
+        </button>
+        <button data-number class="calculator-btn">7</button>
+        <button data-number class="calculator-btn">8</button>
+        <button data-number class="calculator-btn">9</button>
+        <button data-operation class="calculator-btn calc-btn">
+          <span>&times;</span>
+        </button>
+        <button data-number class="calculator-btn">4</button>
+        <button data-number class="calculator-btn">5</button>
+        <button data-number class="calculator-btn">6</button>
+        <button data-operation class="calculator-btn calc-btn">
+          <span>&minus;</span>
+        </button>
+        <button data-number class="calculator-btn">1</button>
+        <button data-number class="calculator-btn">2</button>
+        <button data-number class="calculator-btn">3</button>
+        <button data-operation class="calculator-btn calc-btn">
+          <span>&plus;</span>
+        </button>
+        <button data-number class="calculator-btn">0</button>
+        <button data-number class="calculator-btn">.</button>
+        <button data-equals class="calculator-btn calc-btn equal">
+          <span>&equals;</span>
+        </button>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
